@@ -24,7 +24,6 @@ export_env_dir() {
     # shellcheck disable=SC2164
     pushd "$env_dir" >/dev/null
     for e in *; do
-      echo "$e"
       [ -e "$e" ] || continue
       echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
       export "$e=$(cat "$e")"
@@ -48,7 +47,7 @@ mkdir -p "$BUILD_DIR" "$CACHE_DIR"
 
 cd "$CACHE_DIR"
 
-echo "-----> app DOKKU_PROXY_ADDRESS  ${DOKKU_PROXY_ADDRESS} ${APP_NAME} ${APP}"
+echo "-----> app DOKKU_PROXY_ADDRESS  ${DOKKU_PROXY_ADDRESS}, this is the fallback if static files are not found"
 
 if [[ ! -d "${NGINX_TARBALL%.tar.gz}" ]]; then
   echo "-----> Download and unzip nginx ${NGINX_VERSION} via http"
