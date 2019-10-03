@@ -16,6 +16,19 @@ suppress() {
   /bin/rm --force /tmp/surpress.out 2> /dev/null; "$@" 2>&1 > /tmp/surpress.out || cat /tmp/surpress.out; /bin/rm /tmp/surpress.out;
 }
 
+export_env_dir() {
+  env_dir=$1
+  whitelist_regex=${2:-''}
+  blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+  if [ -d "$env_dir" ]; then
+    for e in $(ls $env_dir); do
+      echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+      export "$e=$(cat $env_dir/$e)"
+      :
+    done
+  fi
+}
+
 # parse and derive params
 BUILD_DIR=$1
 CACHE_DIR=$2
@@ -25,7 +38,7 @@ mkdir -p "$BUILD_DIR" "$CACHE_DIR"
 
 cd "$CACHE_DIR"
 
-echo "-----> app names  ${DOKKU_APP_NAME} ${APP_NAME} ${APP}"
+echo "-----> app names2  ${DOKKU_APP_NAME} ${APP_NAME} ${APP}"
 
 if [[ ! -d "${NGINX_TARBALL%.tar.gz}" ]]; then
   echo "-----> Download and unzip nginx ${NGINX_VERSION} via http"
