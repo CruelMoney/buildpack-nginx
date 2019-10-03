@@ -38,6 +38,7 @@ mkdir -p "$BUILD_DIR" "$CACHE_DIR"
 cd "$CACHE_DIR"
 
 echo "-----> app names2  ${DOKKU_APP_NAME} ${APP_NAME} ${APP}"
+echo "-----> app BUILD_ENV  ${BUILD_ENV} "
 
 if [[ ! -d "${NGINX_TARBALL%.tar.gz}" ]]; then
   echo "-----> Download and unzip nginx ${NGINX_VERSION} via http"
