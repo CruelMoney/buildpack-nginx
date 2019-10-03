@@ -48,7 +48,7 @@ mkdir -p "$BUILD_DIR" "$CACHE_DIR"
 
 cd "$CACHE_DIR"
 
-echo "-----> app names2  ${DOKKU_PROXY_ADDRESS} ${APP_NAME} ${APP}"
+echo "-----> app DOKKU_PROXY_ADDRESS  ${DOKKU_PROXY_ADDRESS} ${APP_NAME} ${APP}"
 
 if [[ ! -d "${NGINX_TARBALL%.tar.gz}" ]]; then
   echo "-----> Download and unzip nginx ${NGINX_VERSION} via http"
@@ -153,7 +153,7 @@ cat <<EOF >"$BUILD_DIR/start_nginx"
 #!/usr/bin/env bash
 rm -f /app/nginx/nginx.conf
 if [[ -f /app/nginx/app-nginx.conf.sigil ]]; then
-  /app/sigil/sigil -f /app/nginx/app-nginx.conf.sigil NGINX_ROOT="\$NGINX_ROOT" PORT="\$PORT" | cat -s > /app/nginx/nginx.conf
+  /app/sigil/sigil -f /app/nginx/app-nginx.conf.sigil NGINX_ROOT="\$NGINX_ROOT" DOKKU_PROXY_ADDRESS="\$DOKKU_PROXY_ADDRESS" PORT="\$PORT" | cat -s > /app/nginx/nginx.conf
 else
   erb /app/nginx/nginx.conf.erb > /app/nginx/nginx.conf
 fi
